@@ -1,43 +1,19 @@
 package com.gaming.ce.finacial.controller;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-
-import javax.annotation.security.RolesAllowed;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gaming.ce.common.Role;
-import com.gaming.ce.finacial.entity.order.DepositOrder;
-import com.gaming.ce.finacial.repository.order.DepositOrderRepository;
-import com.gaming.ce.finacial.service.usecase.DepositOrderService;
-import com.gaming.ce.server.entity.Session;
+import com.gaming.ce.finacial.repository.DepositOrderRepository;
+import com.gaming.ce.finacial.usecase.DepositOrderService;
 import com.gaming.ce.server.service.SessionService;
-import com.gaming.ce.server.util.TokenUtil;
-import com.gaming.ce.user.design.service.UserService;
-import com.mangofactory.swagger.annotations.ApiIgnore;
 import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiOperation;
-import com.wordnik.swagger.annotations.ApiParam;
 
 
 @RestController
 @RequestMapping("/deposit")
 @Api(value = "/deposit", description = "存款")
 public class DepositController {
-	
-	@Autowired
-	private UserService userService;
 	
 	@Autowired
 	private SessionService sessionService;
@@ -49,7 +25,7 @@ public class DepositController {
 	private DepositOrderRepository depositOrderRepository;
 	
 	
-	@RequestMapping(value = "/depositOrder", method = RequestMethod.POST)
+	/*@RequestMapping(value = "/depositOrder", method = RequestMethod.POST)
 	@ApiOperation(value="创建存款订单")
 	@RolesAllowed(Role.USER)
 	public ResponseEntity<Void> deposit(
@@ -93,6 +69,6 @@ public class DepositController {
 		
 		depositOrderService.auditDepositOrder(depositOrderId);
 
-	}
+	}*/
 
 }

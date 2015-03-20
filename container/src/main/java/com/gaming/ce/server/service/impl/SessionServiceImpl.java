@@ -1,7 +1,5 @@
 package com.gaming.ce.server.service.impl;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -11,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
-
 import com.gaming.ce.server.entity.Session;
-import com.gaming.ce.server.repository.SessionRepository;
 import com.gaming.ce.server.service.SessionService;
 import com.gaming.ce.server.util.AESUtil;
 import com.gaming.ce.server.util.CookieUtil;
@@ -32,20 +27,10 @@ public class SessionServiceImpl implements SessionService{
 	@Autowired
 	Environment env;
 	
-	@Autowired
-	private SessionRepository sessionRepository;
 	
 	public Session createUserSession( String userName , Long userId , HttpServletRequest request , HttpServletResponse response ) {
 		
-		List<Session> sessions = sessionRepository.findSessionByUserId(userId);
-
-		//创建Session
-		Session session=null;
-		if( sessions!=null && sessions.size()>0 ){
-			session=sessions.get(0);
-		}else{
-			session = new Session();
-		}
+		Session session = new Session();
 		session.setUserName(userName);
 		session.setUserId(userId);
 		session.setStatus(Session.STATUS_LOGIN);
@@ -57,11 +42,10 @@ public class SessionServiceImpl implements SessionService{
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-		sessionRepository.save(session);
 		
 		//设置cookie
 		CookieUtil.setCookie(response, TokenUtil.TOKEN_COOKIE_NMAE,
-						session.getSessionSign(), request.getContextPath(), true, -1);
+						session.getUserName(), request.getContextPath(), true, -1);
 
 		return session;
 	}
@@ -69,45 +53,14 @@ public class SessionServiceImpl implements SessionService{
 
 	@Override
 	public Session findSessionByToken(String token) {
-		String sessionId = null;
-		try {
-			
-			String sessionInfo = AESUtil.decrypt(token,env.getProperty("session.key"));
-			sessionId = sessionInfo.split(":")[0];
-			
-		} catch (Exception e) {
-			log.error(e);
-		}
-		
-		if(StringUtils.isEmpty(sessionId)){
-			return null;
-		}
-		
-		Session session = sessionRepository.findOne(sessionId);
-		
-		if(!session.getSessionSign().contains(token)){
-			log.warn("token:"+token+" invalid , new token:"+session.getSessionSign());
-			return null;
-		}
-
-		return session;
+		log.warn("Cannot find session for token:"+token);
+		return null;
 	}
 	
 	
 	@Override
 	public void logoutSessionByToken(String token) {
-		Session session = findSessionByToken(token);
-		if( session != null ){
-			session.setStatus(0);
-			sessionRepository.save(session);
-		}
+		log.trace("Logout token:"+token);
 	}
-
-
-	@Override
-	public List<Session> findSessionsByUserId(Long userId) {
-		return sessionRepository.findSessionByUserId(userId);
-	}
-
 
 }

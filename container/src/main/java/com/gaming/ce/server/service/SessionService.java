@@ -1,12 +1,11 @@
 package com.gaming.ce.server.service;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 
 import com.gaming.ce.server.entity.Session;
@@ -22,6 +21,7 @@ public interface SessionService {
 	 * @param userIp
 	 * @return
 	 */
+	@CachePut(key="#p0")
 	public Session createUserSession( String userName , Long userId , HttpServletRequest request , HttpServletResponse response );
 	
 	@Cacheable(key="#p0")
@@ -34,6 +34,5 @@ public interface SessionService {
 	@CacheEvict(key="#p0")
 	public void logoutSessionByToken(String token);
 	
-	public List<Session> findSessionsByUserId( Long userId );
 	
 }

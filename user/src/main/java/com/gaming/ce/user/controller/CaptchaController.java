@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gaming.ce.common.Code;
+import com.gaming.ce.common.constant.Code;
 import com.gaming.ce.server.util.CookieUtil;
 import com.gaming.ce.server.util.TokenUtil;
 import com.google.code.kaptcha.impl.DefaultKaptcha;

@@ -1,23 +1,24 @@
 package com.gaming.ce.server.config;
 
 import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.jolbox.bonecp.BoneCPDataSource;
 
 @Configuration
-@EnableJpaRepositories(basePackages ={"com.gaming.ce"})
-@EntityScan(basePackages ={"com.gaming.ce"})
 public class RepositoryConfig {
 
 	@Autowired
 	Environment env;
+	
+	@Bean
+	public JdbcTemplate jdbcTemplate(){
+		return new JdbcTemplate(dataSource());
+	}
 
 	@Bean
 	public DataSource dataSource() {
@@ -40,45 +41,4 @@ public class RepositoryConfig {
 
 	}
 
-
-	/*@Bean
-	public EntityManagerFactory entityManagerFactory() {
-		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-		vendorAdapter.setGenerateDdl(true);
-		vendorAdapter.setShowSql(Boolean.parseBoolean(env.getProperty("spring.jpa.show-sql")));
-		vendorAdapter
-				.setDatabasePlatform(env.getProperty("spring.jpa.database-platform"));
-
-		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-		factory.setJpaVendorAdapter(vendorAdapter);
-		factory.setPackagesToScan("com.springrest.restserver.domain");
-		factory.setDataSource(dataSource());
-
-		Properties properties = new Properties();
-		properties
-				.setProperty("hibernate.cache.use_second_level_cache", "true");
-		properties
-		.setProperty("hibernate.cache.provider_class", "true");
-		properties.setProperty("hibernate.cache.provider_class",
-				"net.sf.ehcache.hibernate.SingletonEhCacheProvider");
-		
-		properties.setProperty("hibernate.cache.use_query_cache", "true");
-		properties.setProperty("hibernate.generate_statistics", "false");
-
-		factory.setJpaProperties(properties);
-
-		factory.afterPropertiesSet();
-
-		return factory.getObject();
-	}
-	
-
-	@Bean
-	public PlatformTransactionManager transactionManager() {
-		JpaTransactionManager txManager = new JpaTransactionManager();
-		JpaDialect jpaDialect = new HibernateJpaDialect();
-		txManager.setEntityManagerFactory(entityManagerFactory());
-		txManager.setJpaDialect(jpaDialect);
-		return txManager;
-	}*/
 }

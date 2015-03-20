@@ -8,14 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gaming.ce.common.Code;
-import com.gaming.ce.common.Role;
-import com.gaming.ce.finacial.service.usecase.BalanceService;
+import com.gaming.ce.common.constant.Code;
+import com.gaming.ce.common.constant.Role;
+import com.gaming.ce.finacial.usecase.BalanceService;
 import com.gaming.ce.server.entity.Session;
 import com.gaming.ce.server.service.SessionService;
 import com.gaming.ce.server.util.CookieUtil;
 import com.gaming.ce.server.util.TokenUtil;
-import com.gaming.ce.user.design.service.UserService;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 
@@ -26,9 +25,6 @@ public class BalanceController {
 	
 	@Autowired
 	private BalanceService balanceService;
-	
-	@Autowired
-	private UserService userService;
 	
 	@Autowired
 	private SessionService sessionService;

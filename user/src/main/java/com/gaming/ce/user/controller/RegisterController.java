@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gaming.ce.user.design.entity.User;
+import com.gaming.ce.user.entity.User;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -22,7 +22,7 @@ public class RegisterController {
 	private static final Log log = LogFactory.getLog(RegisterController.class);
 
 	@Autowired
-	private com.gaming.ce.user.design.service.UserService userService;
+	private com.gaming.ce.user.service.UserService userService;
 	
 
 	@RequestMapping(value = "/regist", method = RequestMethod.POST)
@@ -32,12 +32,11 @@ public class RegisterController {
 			@ApiParam(defaultValue = "111111", required = true, value = "密码") @RequestParam String password
 			) {
 		
-		User user = userService.findUserByUserName(userName);
-		if(user!=null){
+		if(userService.isUserExisted(userName)){
 			 return ResponseEntity.status(201).build();
 		}
 		
-		user = userService.createUserAndAuthorization(userName, password);
+		User user = userService.createUserAndAuthorization(userName, password);
 		
 		log.trace("Create:"+user.getUserName());
 

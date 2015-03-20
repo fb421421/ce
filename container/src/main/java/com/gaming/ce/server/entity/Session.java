@@ -4,13 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.UUID;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.Table;
 
-@Entity
-@Table(indexes={@Index(name="userId",columnList="userId")})
 public class Session  implements Serializable{
 	
 	/**
@@ -24,7 +18,6 @@ public class Session  implements Serializable{
 	public static final String NAME="session";
 	
 	
-	@Id
 	private String id = UUID.randomUUID().toString();
 	
 	private String userName;
